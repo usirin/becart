@@ -9,8 +9,14 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'bcrypt-ruby', '~> 3.1.2'
 
+# Custom Gems
+gem 'metainspector'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', :require => false
+  gem 'database_cleaner'
+  gem 'vcr'
+  gem 'webmock'
 end
 
