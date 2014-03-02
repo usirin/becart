@@ -15,7 +15,7 @@ gem 'bootstrap-sass', github:'twbs/bootstrap-sass'
 # Custom Gems
 gem 'metainspector'
 
-group :development, :test do
+group :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
