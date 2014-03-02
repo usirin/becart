@@ -1,12 +1,9 @@
 class LinkGrabber
-  def self.for_url(url)
-    hash_form(MetaInspector.new(url, :allow_redirections => :safe))
-  end
+  class NotValidUrl < RuntimeError; end
 
-  def self.hash_form(meta_object)
-    return {
-      :title => meta_object.title,
-      :description => meta_object.description
-    }
+  def self.for_url(url)
+    link = LinkEngine.get_meta(url)
+    raise NotValidUrl if link.nil?
+    link
   end
 end

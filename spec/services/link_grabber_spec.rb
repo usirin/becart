@@ -1,24 +1,19 @@
 require_relative "../../app/services/link_grabber"
-require 'metainspector'
-require 'vcr_helper'
+
+class LinkEngine; end
 
 describe LinkGrabber do
-  let(:document) { MetaInspector.new("medium.com", :allow_redirections => :safe) }
-  let(:grabbed_hash) { LinkGrabber.for_url("medium.com") }
-
-  before do
-    VCR.use_cassette("medium-grab") do
-      document && grabbed_hash
-    end
+  it "grabs link from engine" do
+    link_meta = double(:title => "Google", :description => "google is cool")
+    LinkEngine.stub(:get_meta).with("http://google.com") { link_meta }
+    LinkGrabber.for_url("http://google.com").should == link_meta
   end
 
-  context ".url", :vcr => true do
-    it "grabs the title of a website" do
-      grabbed_hash[:title].should == document.title
-    end
-
-    it "grabs the description of a website" do
-      grabbed_hash[:description].should == document.description
-    end
+  it "raises an error if url is not valid" do
+    LinkGrabber.stub(:valid_url?).with("not_valid_url") { false }
+    LinkEngine.stub(:get_meta).with("not_valid_url") { nil }
+    expect do
+      LinkGrabber.for_url("not_valid_url")
+    end.to raise_error LinkGrabber::NotValidUrl
   end
 end
